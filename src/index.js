@@ -17,7 +17,6 @@ import Cart from "./cart.js";
 const cart = new Cart();
 
 const app = document.getElementById("app");
-const isDiscountActive = cart.isDiscount;
 const discountBtn = document.createElement("button");
 discountBtn.textContent = "Применить скидку";
 discountBtn.onclick = () => {
@@ -117,12 +116,13 @@ btnSubmit.onclick = async () => {
     };
 
     const msg = await submitOrder(order);
-    alert(msg);                
-    cart.clear();                     
+    alert(msg);
+    cart.clear();
     renderCartPopup();
     cartPopup.style.display = "none";
     if (cart.cart.length === 0) {
       cartBtn.disabled = true;
+      cartBtn.textContent = cart.cart.length ? `Корзина (${cart.cart.length})` : "Корзина";
     }
   } catch (e) {
     console.error(e);
@@ -155,6 +155,10 @@ function printCards(list) {
     addBtn.onclick = () => {
       cart.add(product, 1);
       cartBtn.disabled = false;
+      cartBtn.textContent = cart.cart.length ? `Корзина (${cart.cart.length})` : "Корзина";
+      if (cartPopup.style.display === "block") {
+        renderCartPopup();
+      }
     };
     card.appendChild(addBtn);
 
@@ -166,6 +170,7 @@ function printCards(list) {
       if (cart.cart.length === 0) {
         cartBtn.disabled = true;
       }
+      cartBtn.textContent = cart.cart.length ? `Корзина (${cart.cart.length})` : "Корзина";
     };
     card.appendChild(removeBtn);
 
@@ -180,6 +185,6 @@ async function main() {
     printCards(products);
   } catch (error) {
     console.error(error);
-  }
+  } 
 }
 main();
